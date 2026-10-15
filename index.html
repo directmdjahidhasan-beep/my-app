@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="bn" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Udvash Ultimate Exam & Syllabus Tracker Pro Max</title>
+    <!-- Google Fonts & Font Awesome CDN -->
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: rgba(17, 24, 39, 0.85);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --accent-udvash: #3b82f6;
+            --accent-my: #10b981;
+            --accent-gap: #ef4444;
+            --accent-gold: #f59e0b;
+            --sidebar-bg: #070a12;
+            --header-bg: rgba(11, 15, 25, 0.9);
+        }
+
+        [data-theme="light"] {
+            --bg-color: #f3f4f6;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --card-border: rgba(0, 0, 0, 0.08);
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+            --accent-udvash: #2563eb;
+            --accent-my: #059669;
+            --accent-gap: #dc2626;
+            --accent-gold: #d97706;
+            --sidebar-bg: #ffffff;
+            --header-bg: rgba(243, 244, 246, 0.9);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Hind Siliguri', 'Poppins', sans-serif; transition: background 0.3s, color 0.3s; }
+        html { scroll-behavior: smooth; }
+        body { background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; display: flex; overflow-x: hidden; }
+
+        /* Sidebar Navigation */
+        aside {
+            width: 260px;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--card-border);
+            height: 100vh;
+            position: fixed;
+            top: 0; left: 0;
+            display: flex;
+            flex-direction: column;
+            z-index: 1000;
+            transition: transform 0.3s ease;
+        }
+        .sidebar-brand {
+            padding: 20px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--accent-udvash), var(--accent-gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            border-bottom: 1px solid var(--card-border);
+            text-align: center;
+        }
+        .sidebar-menu {
+            list-style: none;
+            padding: 15px 10px;
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+        .sidebar-menu li {
+            margin-bottom: 5px;
+        }
+        .sidebar-menu button {
+            width: 100%;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 12px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.9rem;
+        }
+        .sidebar-menu button.active, .sidebar-menu button:hover {
+            background: var(--accent-udvash);
+            color: #fff;
+        }
+
+        /* Main Wrapper */
+        .main-wrapper {
+            margin-left: 260px;
+            flex-grow: 1;
+            padding: 20px;
+            max-width: calc(100% - 260px);
+            min-height: 100vh;
+        }
+        @media(max-width: 900px) {
+            aside { transform: translateX(-100%); }
+            aside.mobile-open { transform: translateX(0); }
+            .main-wrapper { margin-left: 0; max-width: 100%; }
+        }
+
+        /* Top Bar */
+        .top-navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--header-bg);
+            backdrop-filter: blur(10px);
+            padding: 12px 20px;
+            border-radius: 14px;
+            border: 1px solid var(--card-border);
+            margin-bottom: 24px;
+            position: sticky;
+            top: 10px;
+            z-index: 999;
+        }
+        .top-nav-left { display: flex; align-items: center; gap: 15px; }
+        .menu-toggle-btn { background: transparent; border: none; font-size: 1.3rem; color: var(--text-main); cursor: pointer; display: none; }
+        @media(max-width: 900px) { .menu-toggle-btn { display: block; } }
+        .top-tools { display: flex; gap: 10px; align-items: center; }
+        .tool-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--card-border); color: var(--text-main); padding: 8px 12px; border-radius: 8px; cursor: pointer; font-size: 0.9rem; display: flex; align-items: center; gap: 6px; }
+        .tool-btn:hover { background: var(--accent-udvash); color: #fff; }
+
+        .container { max-width: 1100px; margin: 0 auto; }
+        .glass-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 24px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15); margin-bottom: 24px; backdrop-filter: blur(10px); }
+        .alert-strip { background: linear-gradient(90deg, #ef4444, #b91c1c); color: white; padding: 14px 20px; border-radius: 12px; font-size: 1.1rem; font-weight: 700; text-align: center; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3); }
+
+        header { text-align: center; padding: 10px 20px 20px 20px; }
+        header h1 { font-size: 1.8rem; font-weight: 700; background: linear-gradient(to right, var(--text-main), var(--accent-udvash)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 5px; }
+        header p { color: var(--text-muted); font-size: 0.9rem; }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        /* Stats Grid */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px; }
+        .stat-card { display: flex; align-items: center; gap: 15px; padding: 18px; margin-bottom: 0 !important; }
+        .stat-icon { width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; }
+        .stat-info h3 { font-size: 0.85rem; color: var(--text-muted); }
+        .stat-info .stat-value { font-size: 1.5rem; font-weight: 700; }
+
+        .target-banner { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; background: var(--card-bg); border-left: 5px solid var(--accent-gold); }
+        @media(max-width: 768px) { .target-banner { grid-template-columns: 1fr; } }
+
+        .input-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
+        label { font-size: 0.88rem; color: var(--text-muted); }
+        input, select, textarea { background: rgba(15, 23, 42, 0.05); border: 1px solid var(--card-border); color: var(--text-main); padding: 10px 12px; border-radius: 8px; outline: none; width: 100%; }
+        input:focus, select:focus, textarea:focus { border-color: var(--accent-udvash); }
+
+        .pledge-box { background: rgba(245, 158, 11, 0.05); border: 1px solid rgba(245, 158, 11, 0.2); border-radius: 12px; padding: 18px; margin-top: 20px; }
+        .exam-box { border-top: 4px solid var(--accent-gold); }
+        .timer-display-live { font-size: 1.2rem; font-weight: 700; color: var(--accent-gold); margin: 10px 0; background: rgba(245, 158, 11, 0.1); padding: 12px; border-radius: 10px; text-align: center; border: 1px dashed var(--accent-gold); }
+
+        .chapter-container { margin-top: 15px; border-top: 1px solid var(--card-border); padding-top: 15px; }
+        .topic-list { list-style: none; margin-top: 10px; max-height: 300px; overflow-y: auto; padding-right: 5px; }
+        .topic-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: rgba(255,255,255,0.03); margin-bottom: 6px; border-radius: 6px; font-size: 0.88rem; gap: 10px; border: 1px solid var(--card-border); }
+        .topic-item.completed { text-decoration: line-through; color: var(--text-muted); background: rgba(16, 185, 129, 0.08); }
+        .topic-title-text { cursor: pointer; flex-grow: 1; }
+
+        .btn { background: var(--accent-udvash); color: #fff; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; }
+        .btn-sm { padding: 4px 10px; font-size: 0.8rem; }
+        .btn-edit { background: var(--accent-gold); color: #000; }
+        .btn-success { background: var(--accent-my); color: #fff; }
+        .flex-row { display: flex; gap: 8px; align-items: center; }
+        .section-title { font-size: 1.2rem; font-weight: 600; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+        .history-card { background: rgba(255, 255, 255, 0.02); border: 1px solid var(--card-border); padding: 12px 15px; border-radius: 8px; margin-top: 10px; font-size: 0.9rem; }
+        .progress-bar-container { width: 100%; background: rgba(255, 255, 255, 0.08); border-radius: 8px; height: 10px; overflow: hidden; margin: 8px 0; }
+        .progress-bar-fill { height: 100%; background: var(--accent-my); width: 0%; transition: width 0.3s ease; }
+
+        /* Focus Mode Styles */
+        body.focus-mode aside { display: none !important; }
+        body.focus-mode .main-wrapper { margin-left: 0 !important; max-width: 100% !important; padding: 10px; }
+        body.focus-mode .top-navbar { display: none !important; }
+        .focus-banner { display: none; background: linear-gradient(135deg, var(--accent-udvash), var(--accent-my)); color: #fff; padding: 15px; border-radius: 12px; text-align: center; margin-bottom: 20px; font-weight: 700; }
+        body.focus-mode .focus-banner { display: block; }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar Navigation -->
+    <aside id="sidebar">
+        <div class="sidebar-brand"><i class="fa-solid fa-graduation-cap"></i> উদ্ভাস ট্র্যাকার</div>
+        <ul class="sidebar-menu">
+            <li><button class="active" onclick="switchTab('overview')"><i class="fa-solid fa-chart-pie"></i> ওভারভিউ</button></li>
+            <li><button onclick="switchTab('topics')"><i class="fa-solid fa-list-check"></i> অধ্যায় ও টপিকস</button></li>
+            <li><button onclick="switchTab('weekly')"><i class="fa-solid fa-calendar-week"></i> উইকলি এক্সাম</button></li>
+            <li><button onclick="switchTab('monthly')"><i class="fa-solid fa-calendar-days"></i> মান্থলি এক্সাম</button></li>
+            <li><button onclick="switchTab('daily')"><i class="fa-solid fa-clock"></i> ডেইলি এক্সাম</button></li>
+            <li><button onclick="switchTab('total-setup')"><i class="fa-solid fa-book-bookmark"></i> টপিকস ও ব্যাকআপ</button></li>
+            <li><button onclick="switchTab('stopwatch')"><i class="fa-solid fa-stopwatch-20"></i> স্টপওয়াচ ও ফোকাস</button></li>
+            <li><button onclick="switchTab('motivation')"><i class="fa-solid fa-fire-flame-curved" style="color:var(--accent-gold)"></i> মায়ের শপথ ও মোটিভেশন</button></li>
+        </ul>
+    </aside>
+
+    <!-- Main Content Wrapper -->
+    <div class="main-wrapper">
+        
+        <!-- Top Navbar -->
+        <div class="top-navbar">
+            <div class="top-nav-left">
+                <button class="menu-toggle-btn" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
+                <span style="font-weight: 700; font-size: 1rem;">Varsity Admission Tracker</span>
+            </div>
+            <div class="top-tools">
+                <button class="tool-btn" onclick="toggleTheme()"><i class="fa-solid fa-circle-half-stroke" id="theme-icon"></i> থিম</button>
+                <button class="tool-btn" onclick="toggleFocusMode()"><i class="fa-solid fa-expand"></i> ফোকাস মোড</button>
+            </div>
+        </div>
+
+        <div class="focus-banner">
+            🎯 ফোকাস মোড চালু আছে! অন্য সব ডিস্ট্রাকশন দূরে সরিয়ে কেবল পড়াশোনায় মন দিন। 
+            <button onclick="toggleFocusMode()" style="background:#fff; color:#000; border:none; padding:4px 10px; border-radius:6px; margin-left:10px; cursor:pointer;">বের হন</button>
+        </div>
+
+        <div class="container">
+            <div class="alert-strip" id="urgent-alert-box">
+                <i class="fa-solid fa-triangle-exclamation"></i> <span id="alert-gap-count">0</span>টি টপিকস দ্রুত শেষ কর পরীক্ষা সামনেই সময় নেই!
+            </div>
+
+            <header>
+                <span class="badge" style="background:#6366f1; padding: 4px 12px; border-radius:15px; font-size:0.8rem; color:#fff;">Varsity Admission 2026-27</span>
+                <h1>উদ্ভাস সিলেবাস ও এক্সাম ট্র্যাকার প্রো ম্যাক্স</h1>
+                <p>আপনার পিসিএমবি এডমিশন প্রস্তুতি ও ব্যাকলগ ট্র্যাকিং সিস্টেম</p>
+            </header>
+
+            <!-- TAB 1: OVERVIEW -->
+            <div id="tab-overview" class="tab-content active">
+                <h3 style="margin-bottom:10px; color:var(--text-muted); font-size:1rem;"><i class="fa-solid fa-layer-group"></i> টপিক ভিত্তিক ওভারভিউ:</h3>
+                <div class="stats-grid">
+                    <div class="glass-card stat-card">
+                        <div class="stat-icon" style="background: rgba(59, 130, 246, 0.15); color: var(--accent-udvash);"><i class="fa-solid fa-chalkboard-user"></i></div>
+                        <div class="stat-info"><h3>উদ্ভাস মোট টপিক</h3><div class="stat-value" id="st-udvash-topics">0</div></div>
+                    </div>
+                    <div class="glass-card stat-card">
+                        <div class="stat-icon" style="background: rgba(16, 185, 129, 0.15); color: var(--accent-my);"><i class="fa-solid fa-circle-check"></i></div>
+                        <div class="stat-info"><h3>আমার পড়া শেষ</h3><div class="stat-value" id="st-my-topics">0</div></div>
+                    </div>
+                    <div class="glass-card stat-card">
+                        <div class="stat-icon" style="background: rgba(239, 68, 68, 0.15); color: var(--accent-gap);"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                        <div class="stat-info"><h3>মোট টপিক গ্যাপ</h3><div class="stat-value" id="st-gap-topics">0</div></div>
+                    </div>
+                    <div class="glass-card stat-card">
+                        <div class="stat-icon" style="background: rgba(245, 158, 11, 0.15); color: var(--accent-gold);"><i class="fa-solid fa-fire"></i></div>
+                        <div class="stat-info"><h3>দৈনিক পড়তে হবে</h3><div class="stat-value" id="st-daily-rate">0 টি</div></div>
+                    </div>
+                </div>
+
+                <div class="glass-card" style="padding: 15px 20px;">
+                    <div style="display: flex; justify-content: space-between; font-weight: 600; font-size: 0.95rem; margin-bottom: 5px;">
+                        <span>সর্বমোট অগ্রগতি (Overall Progress)</span>
+                        <span id="overall-percentage-text">0%</span>
+                    </div>
+                    <div class="progress-bar-container" style="height: 14px;">
+                        <div class="progress-bar-fill" id="overall-percentage-bar"></div>
+                    </div>
+                </div>
+
+                <div class="glass-card target-banner">
+                    <div>
+                        <div class="input-group">
+                            <label><i class="fa-solid fa-calendar-check" style="color: var(--accent-gold);"></i> ব্যাকলগ কভার করার ডেডলাইন</label>
+                            <input type="date" id="global-target-date" onchange="updateTargetDate()">
+                        </div>
+                        <p style="font-size: 0.8rem; color: var(--text-muted);">উদ্ভাস ক্লাসের পাশাপাশি প্রতিদিন কতটি টপিক শেষ করতে হবে তা হিসাব হবে।</p>
+                    </div>
+                    <div style="background: rgba(245, 158, 11, 0.08); border: 1px dashed rgba(245, 158, 11, 0.3); border-radius: 12px; padding: 15px; text-align: center; display: flex; flex-direction: column; justify-content: center;">
+                        <h4 style="color: var(--accent-gold); font-size: 0.95rem;">ডেইলি রিকোয়ারমেন্ট রেট</h4>
+                        <div style="font-size: 1.6rem; font-weight: 700;" id="target-calc-display">০ টি / দিন</div>
+                        <span style="font-size: 0.8rem; color: var(--text-muted);" id="days-left-display">তারিখ সেট করা হয়নি</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: TOPIC MANAGER -->
+            <div id="tab-topics" class="tab-content">
+                <div class="glass-card">
+                    <div class="section-title"><i class="fa-solid fa-bolt" style="color: var(--accent-gold);"></i> ১ম ও ২য় পত্র অনুযায়ী অধ্যায় ও টপিকস ইনপুট দিন</div>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 12px;">
+                        <div class="input-group">
+                            <label>সাবজেক্ট ও পত্র</label>
+                            <select id="topic-sub">
+                                <option value="physics1">Physics ১ম পত্র</option>
+                                <option value="physics2">Physics ২য় পত্র</option>
+                                <option value="chem1">Chemistry ১ম পত্র</option>
+                                <option value="chem2">Chemistry ২য় পত্র</option>
+                                <option value="math1">Higher Math ১ম পত্র</option>
+                                <option value="math2">Higher Math ২য় পত্র</option>
+                                <option value="bio1">Biology ১ম পত্র</option>
+                                <option value="bio2">Biology ২য় পত্র</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label>অধ্যায়ের সিরিয়াল</label>
+                            <input type="number" id="topic-chap-num" value="1" min="1">
+                        </div>
+                        <div class="input-group">
+                            <label>অধ্যায়ের নাম</label>
+                            <input type="text" id="topic-chap-name" placeholder="যেমন: ভেক্টর">
+                        </div>
+                        <div class="input-group">
+                            <label>মোট টপিক সংখ্যা</label>
+                            <input type="number" id="topic-count" value="5" min="1">
+                        </div>
+                    </div>
+                    <button class="btn" onclick="addFastChapter()"><i class="fa-solid fa-plus"></i> অধ্যায় যোগ করুন</button>
+                </div>
+
+                <div class="glass-card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 15px;">
+                        <div class="section-title" style="margin-bottom:0;"><i class="fa-solid fa-layer-group"></i> অধ্যায় ও টপিকস লিস্ট</div>
+                        <div>
+                            <select id="view-subject-filter" onchange="renderChapters()" style="font-weight: 600;">
+                                <option value="all">-- সব সাবজেক্ট --</option>
+                                <option value="physics1">Physics ১ম</option>
+                                <option value="physics2">Physics ২য়</option>
+                                <option value="chem1">Chemistry ১ম</option>
+                                <option value="chem2">Chemistry ২য়</option>
+                                <option value="math1">Math ১ম</option>
+                                <option value="math2">Math ২য়</option>
+                                <option value="bio1">Bio ১ম</option>
+                                <option value="bio2">Bio ২য়</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="pcmb-chapters-container"></div>
+                </div>
+            </div>
+
+            <!-- TAB 3: WEEKLY EXAM -->
+            <div id="tab-weekly" class="tab-content">
+                <div class="glass-card exam-box">
+                    <div class="section-title"><i class="fa-solid fa-calendar-week" style="color: var(--accent-gold);"></i> উইকলি এক্সাম ট্র্যাকিং</div>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 15px; margin-bottom: 15px;">
+                        <div class="input-group">
+                            <label>পরীক্ষার তারিখ ও সময়</label>
+                            <input type="datetime-local" id="weekly-exam-date" onchange="saveExamsSetup()">
+                        </div>
+                        <div class="input-group">
+                            <label>মোট টপিকস</label>
+                            <input type="number" id="weekly-total-topics" onchange="saveExamsSetup()">
+                        </div>
+                        <div class="input-group">
+                            <label>পড়া শেষ হয়েছে</label>
+                            <input type="number" id="weekly-my-topics" onchange="saveExamsSetup()">
+                        </div>
+                    </div>
+                    <div class="timer-display-live" id="weekly-timer">সময় বাকি: হিসাব করা হচ্ছে...</div>
+                </div>
+            </div>
+
+            <!-- TAB 4: MONTHLY EXAM -->
+            <div id="tab-monthly" class="tab-content">
+                <div class="glass-card exam-box" style="border-top-color: var(--accent-udvash);">
+                    <div class="section-title"><i class="fa-solid fa-calendar-days" style="color: var(--accent-udvash);"></i> মান্থলি এক্সাম ট্র্যাকিং</div>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 15px; margin-bottom: 15px;">
+                        <div class="input-group">
+                            <label>তারিখ ও সময়</label>
+                            <input type="datetime-local" id="monthly-exam-date" onchange="saveExamsSetup()">
+                        </div>
+                        <div class="input-group">
+                            <label>মোট টপিকস</label>
+                            <input type="number" id="monthly-total-topics" onchange="saveExamsSetup()">
+                        </div>
+                        <div class="input-group">
+                            <label>পড়া শেষ</label>
+                            <input type="number" id="monthly-my-topics" onchange="saveExamsSetup()">
+                        </div>
+                    </div>
+                    <div class="timer-display-live" id="monthly-timer" style="color: var(--accent-udvash); border-color: var(--accent-udvash);">সময় বাকি: হিসাব করা হচ্ছে...</div>
+                </div>
+            </div>
+
+            <!-- TAB 5: DAILY EXAM -->
+            <div id="tab-daily" class="tab-content">
+                <div class="glass-card exam-box" style="border-top-color: var(--accent-my);">
+                    <div class="section-title"><i class="fa-solid fa-clock" style="color: var(--accent-my);"></i> ডেইলি এক্সাম ট্র্যাকিং</div>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; margin-bottom: 15px;">
+                        <div class="input-group">
+                            <label>তারিখ ও সময়</label>
+                            <input type="datetime-local" id="daily-exam-date" onchange="saveExamsSetup()">
+                        </div>
+                        <div class="input-group">
+                            <label>মোট টপিকস</label>
+                            <input type="number" id="daily-total-topics" onchange="saveExamsSetup()">
+                        </div>
+                        <div class="input-group">
+                            <label>পড়া শেষ</label>
+                            <input type="number" id="daily-my-topics" onchange="saveExamsSetup()">
+                        </div>
+                    </div>
+                    <div class="timer-display-live" id="daily-timer" style="color: var(--accent-my); border-color: var(--accent-my);">সময় বাকি: হিসাব করা হচ্ছে...</div>
+                </div>
+            </div>
+
+            <!-- TAB 6: TOTAL BOOKS & BACKUP -->
+            <div id="tab-total-setup" class="tab-content">
+                <div class="glass-card">
+                    <div class="section-title"><i class="fa-solid fa-book-bookmark" style="color: var(--accent-gold);"></i> সর্বমোট টপিকস ও ব্যাকআপ</div>
+                    <div class="flex-row" style="gap: 15px; flex-wrap: wrap;">
+                        <button class="btn btn-success" onclick="exportDataJson()"><i class="fa-solid fa-download"></i> ডাটা ব্যাকআপ (JSON)</button>
+                        <label class="btn btn-edit" style="cursor: pointer; margin-bottom: 0;">
+                            <i class="fa-solid fa-upload"></i> রিস্টোর (JSON) <input type="file" id="import-file" style="display: none;" accept=".json" onchange="importDataJson(event)">
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 7: STOPWATCH & FOCUS -->
+            <div id="tab-stopwatch" class="tab-content">
+                <div class="glass-card" style="text-align: center;">
+                    <div class="section-title"><i class="fa-solid fa-stopwatch"></i> ফোকাস স্টাডি টাইমার ও স্টপওয়াচ</div>
+                    <div id="stopwatch-display" style="font-size: 3rem; font-weight: 700; color: var(--accent-gold); margin: 20px 0;">00:00:00</div>
+                    <div class="flex-row" style="justify-content: center; gap: 10px;">
+                        <button class="btn btn-success" onclick="startStopwatch()">শুরু করুন</button>
+                        <button class="btn btn-edit" onclick="pauseStopwatch()">থামুন</button>
+                        <button class="btn" style="background:var(--accent-gap);" onclick="resetStopwatch()">রিসেট</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 8: MOTIVATION -->
+            <div id="tab-motivation" class="tab-content">
+                <div class="glass-card" style="text-align: center; padding: 30px;">
+                    <h2 id="daily-motivation-title" style="color: var(--accent-gold); margin-bottom: 15px;">মায়ের স্বপ্ন আর বাবার ত্যাগের ঋণ</h2>
+                    <p id="daily-motivation-text" style="font-size: 1.1rem; line-height: 1.6; color: var(--text-muted);">"পাবলিক বিশ্ববিদ্যালয়ের টপ সাবজেক্টে আমাকে চান্স পেতেই হবে।"</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        let db = {
+            targetDate: '', totalBookTopics: { physics: 0, chemistry: 0, math: 0, biology: 0 },
+            subjects: {
+                physics1: { name: 'Physics ১ম পত্র', color: '#6366f1', chapters: [] },
+                physics2: { name: 'Physics ২য় পত্র', color: '#6366f1', chapters: [] },
+                chem1: { name: 'Chemistry ১ম পত্র', color: '#06b6d4', chapters: [] },
+                chem2: { name: 'Chemistry ২য় পত্র', color: '#06b6d4', chapters: [] },
+                math1: { name: 'Higher Math ১ম পত্র', color: '#ec4899', chapters: [] },
+                math2: { name: 'Higher Math ২য় পত্র', color: '#ec4899', chapters: [] },
+                bio1: { name: 'Biology ১ম পত্র', color: '#10b981', chapters: [] },
+                bio2: { name: 'Biology ২য় পত্র', color: '#10b981', chapters: [] }
+            },
+            exams: { weeklyDate: '', weeklyTotal: 0, weeklyMy: 0, monthlyDate: '', monthlyTotal: 0, monthlyMy: 0, dailyDate: '', dailyTotal: 0, dailyMy: 0 }
+        };
+
+        // Theme Toggle
+        function toggleTheme() {
+            let html = document.documentElement;
+            let current = html.getAttribute('data-theme');
+            let next = current === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', next);
+            document.getElementById('theme-icon').className = next === 'dark' ? 'fa-solid fa-circle-half-stroke' : 'fa-solid fa-moon';
+            localStorage.setItem('udvash_theme', next);
+        }
+
+        // Focus Mode Toggle
+        function toggleFocusMode() {
+            document.body.classList.toggle('focus-mode');
+        }
+
+        // Sidebar Mobile Toggle
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('mobile-open');
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.sidebar-menu button').forEach(el => el.classList.remove('active'));
+            document.getElementById('tab-' + tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
+            if(window.innerWidth <= 900) {
+                document.getElementById('sidebar').classList.remove('mobile-open');
+            }
+        }
+
+        // Stopwatch Logic
+        let swSeconds = 0, swInterval = null;
+        function startStopwatch() {
+            if(swInterval) return;
+            swInterval = setInterval(() => {
+                swSeconds++;
+                let hrs = Math.floor(swSeconds / 3600).toString().padStart(2, '0');
+                let mins = Math.floor((swSeconds % 3600) / 60).toString().padStart(2, '0');
+                let secs = (swSeconds % 60).toString().padStart(2, '0');
+                document.getElementById('stopwatch-display').innerText = `${hrs}:${mins}:${secs}`;
+            }, 1000);
+        }
+        function pauseStopwatch() { clearInterval(swInterval); swInterval = null; }
+        function resetStopwatch() { pauseStopwatch(); swSeconds = 0; document.getElementById('stopwatch-display').innerText = "00:00:00"; }
+
+        // Data Storage & Rendering
+        function loadAppData() {
+            const data = localStorage.getItem('udvash_paperwise_tracker_history');
+            if (data) { try { db = JSON.parse(data); } catch(e){} }
+            const savedTheme = localStorage.getItem('udvash_theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            renderAll();
+            setInterval(updateLiveTimers, 1000);
+        }
+        function saveAppData() { localStorage.setItem('udvash_paperwise_tracker_history', JSON.stringify(db)); }
+
+        function addFastChapter() {
+            const subKey = document.getElementById('topic-sub').value;
+            const chapNum = parseInt(document.getElementById('topic-chap-num').value) || 1;
+            const chapName = document.getElementById('topic-chap-name').value.trim();
+            const count = parseInt(document.getElementById('topic-count').value) || 1;
+            if (!chapName) { alert('অধ্যায়ের নাম লিখুন।'); return; }
+            let subject = db.subjects[subKey];
+            let chapter = { number: chapNum, name: chapName, topics: [] };
+            for (let i = 0; i < count; i++) {
+                chapter.topics.push({ id: Date.now() + i, name: `টপিক ${1 + i}`, serial: 1 + i, completed: false });
+            }
+            subject.chapters.push(chapter);
+            saveAppData();
+            renderAll();
+            document.getElementById('topic-chap-name').value = '';
+        }
+
+        function toggleTopic(subKey, chapIdx, topicId) {
+            let topic = db.subjects[subKey].chapters[chapIdx].topics.find(t => t.id === topicId);
+            if (topic) { topic.completed = !topic.completed; saveAppData(); renderAll(); }
+        }
+
+        function calculateStats() {
+            let total = 0, completed = 0;
+            Object.keys(db.subjects).forEach(subKey => {
+                db.subjects[subKey].chapters.forEach(chap => {
+                    chap.topics.forEach(t => { total++; if (t.completed) completed++; });
+                });
+            });
+            document.getElementById('alert-gap-count').innerText = total - completed;
+            document.getElementById('st-udvash-topics').innerText = total + ' টি';
+            document.getElementById('st-my-topics').innerText = completed + ' টি';
+            document.getElementById('st-gap-topics').innerText = (total - completed) + ' টি';
+            let percent = total > 0 ? Math.round((completed / total) * 100) : 0;
+            document.getElementById('overall-percentage-text').innerText = percent + '%';
+            document.getElementById('overall-percentage-bar').style.width = percent + '%';
+        }
+
+        function renderChapters() {
+            const container = document.getElementById('pcmb-chapters-container');
+            container.innerHTML = '';
+            const filter = document.getElementById('view-subject-filter').value;
+            Object.keys(db.subjects).forEach(subKey => {
+                if (filter !== 'all' && filter !== subKey) return;
+                let sub = db.subjects[subKey];
+                if (sub.chapters.length === 0) return;
+                let subDiv = document.createElement('div');
+                subDiv.innerHTML = `<h3 style="color: ${sub.color}; margin: 15px 0 5px 0;"><i class="fa-solid fa-book"></i> ${sub.name}</h3>`;
+                sub.chapters.forEach((chap, chapIdx) => {
+                    let topicsHtml = '';
+                    chap.topics.forEach(t => {
+                        topicsHtml += `<li class="topic-item ${t.completed ? 'completed' : ''}">
+                            <span class="topic-title-text" onclick="toggleTopic('${subKey}', ${chapIdx}, ${t.id})"><b>[টপিক ${t.serial}]</b> ${t.name}</span>
+                            <button class="btn btn-sm ${t.completed ? 'btn-success' : ''}" onclick="toggleTopic('${subKey}', ${chapIdx}, ${t.id})">${t.completed ? 'সম্পন্ন' : 'বাকি'}</button>
+                        </li>`;
+                    });
+                    subDiv.innerHTML += `<div class="glass-card chapter-container"><h4>অধ্যায় ${chap.number}: ${chap.name}</h4><ul class="topic-list">${topicsHtml}</ul></div>`;
+                });
+                container.appendChild(subDiv);
+            });
+        }
+
+        function updateLiveTimers() {
+            // Timer calculation placeholder
+        }
+
+        function exportDataJson() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(db, null, 2));
+            const dl = document.createElement('a'); dl.setAttribute("href", dataStr); dl.setAttribute("download", "udvash_backup.json");
+            document.body.appendChild(dl); dl.click(); dl.remove();
+        }
+
+        function importDataJson(e) {
+            let reader = new FileReader();
+            if(e.target.files[0]) {
+                reader.readAsText(e.target.files[0], "UTF-8");
+                reader.onload = (event) => {
+                    try { db = JSON.parse(event.target.result); saveAppData(); renderAll(); alert('সফলভাবে রিস্টোর হয়েছে!'); } catch(err) { alert('ত্রুটিপূর্ণ ফাইল!'); }
+                }
+            }
+        }
+
+        function renderAll() { calculateStats(); renderChapters(); }
+        window.onload = loadAppData;
+    </script>
+</body>
+</html>
